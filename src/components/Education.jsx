@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FormWrapper from "./ui/FormWrapper";
+import FormDisplayButton from "./ui/FormDisplayButton";
 import Input from "./ui/Input";
 
 const Education = () => {
@@ -23,6 +24,7 @@ const Education = () => {
 
   const handleFormSubmission = (event) => {
     event.preventDefault();
+    setValue({ ...value, id: crypto.randomUUID() });
     setValue((prevValue) => ({
       ...prevValue,
       schoolName: "",
@@ -32,63 +34,75 @@ const Education = () => {
       endDate: "",
     }));
     setEducation((prevValue) => [...prevValue, value]);
+    setShowForm(false);
   };
+
   return (
     <section>
       <h2>Education</h2>
+      <FormDisplayButton
+        title={"Add Education Details"}
+        onDisplayForm={() => setShowForm(true)}
+      />
       <div className="card-parent education-container">
-        {(!showForm && education.length > 0) ? education.map((edu) => (
-          <div className="card" key={edu.id}>
-            <h3>{edu.schoolName}</h3>
-            <p>{edu.address}</p>
-            <p>{edu.degree}</p>
-            <p>
-              {edu.startDate} - {edu.endDate}
-            </p>
-          </div>
-        )): <p className="no-data">No education data at the moment</p>}
+        {!showForm && education.length > 0 ? (
+          education.map((edu) => (
+            <div className="card" key={edu.id}>
+              <h3>{edu.schoolName}</h3>
+              <p>{edu.address}</p>
+              <p>{edu.degree}</p>
+              <p>
+                {edu.startDate} - {edu.endDate}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="no-data">No education data at the moment</p>
+        )}
       </div>
 
-      {showForm && <FormWrapper
-        onSubmit={handleFormSubmission}
-        onHideForm={() => setShowForm(false)}
-      >
-        <Input
-          type="text"
-          value={value.schoolName}
-          onChange={handleChange}
-          title="schoolName"
-          label="School name"
-        />
-        <Input
-          type="text"
-          value={value.address}
-          onChange={handleChange}
-          title="address"
-          label="School address"
-        />
-        <Input
-          type="text"
-          value={value.degree}
-          onChange={handleChange}
-          title="degree"
-          label="Degree obtained"
-        />
-        <Input
-          type="date"
-          value={value.startDate}
-          onChange={handleChange}
-          title="startDate"
-          label="Admission date"
-        />
-        <Input
-          type="date"
-          value={value.endDate}
-          onChange={handleChange}
-          title="endDate"
-          label="Graduation date"
-        />
-      </FormWrapper>}
+      {showForm && (
+        <FormWrapper
+          onSubmit={handleFormSubmission}
+          onHideForm={() => setShowForm(false)}
+        >
+          <Input
+            type="text"
+            value={value.schoolName}
+            onChange={handleChange}
+            title="schoolName"
+            label="School name"
+          />
+          <Input
+            type="text"
+            value={value.address}
+            onChange={handleChange}
+            title="address"
+            label="School address"
+          />
+          <Input
+            type="text"
+            value={value.degree}
+            onChange={handleChange}
+            title="degree"
+            label="Degree obtained"
+          />
+          <Input
+            type="date"
+            value={value.startDate}
+            onChange={handleChange}
+            title="startDate"
+            label="Admission date"
+          />
+          <Input
+            type="date"
+            value={value.endDate}
+            onChange={handleChange}
+            title="endDate"
+            label="Graduation date"
+          />
+        </FormWrapper>
+      )}
     </section>
   );
 };
