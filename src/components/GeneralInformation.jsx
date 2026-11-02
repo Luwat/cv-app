@@ -1,4 +1,7 @@
 import { useState } from "react";
+import FormWrapper from "./ui/FormWrapper";
+import Input from "./ui/Input";
+import FormDisplayButton from "./ui/FormDisplayButton";
 
 const GeneralInformation = () => {
   const [generalInformation, setGeneralInformation] = useState({
@@ -44,7 +47,10 @@ const GeneralInformation = () => {
   return (
     <section>
       <h2>General Information</h2>
-      <button onClick={() => setShowForm(true)}>Add general information</button>
+      <FormDisplayButton
+        title={"Add general information"}
+        onDisplayForm={() => setShowForm(true)}
+      />
       {!showForm && (
         <div>
           <div>
@@ -66,54 +72,39 @@ const GeneralInformation = () => {
         </div>
       )}
       {showForm && (
-        <form method="get" onSubmit={handleFormSubmission}>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={value.name}
-              onChange={handleChange}
-              autoComplete="name"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={value.email}
-              onChange={handleChange}
-              autoComplete="email"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="phone">Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              id="phone"
-              value={value.phone}
-              onChange={handleChange}
-              autoComplete="tel"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="address">Address</label>
-            <input
-              type="text"
-              name="address"
-              id="address"
-              value={value.address}
-              onChange={handleChange}
-              autoComplete="address"
-            />
-          </div>
-          <button onClick={() => setShowForm(false)}>Cancel</button>
-          <button type="submit">Submit</button>
-        </form>
+        <FormWrapper
+          onSubmit={handleFormSubmission}
+          onHideForm={() => setShowForm(false)}
+        >
+          <Input
+            type="text"
+            label="Name"
+            title="name"
+            onChange={handleChange}
+            value={value.name}
+          />
+          <Input
+            type="email"
+            label="Email"
+            title="email"
+            onChange={handleChange}
+            value={value.email}
+          />
+          <Input
+            type="tel"
+            label="Telephone number"
+            title="phone"
+            onChange={handleChange}
+            value={value.phone}
+          />
+          <Input
+            type="text"
+            label="Address"
+            title="address"
+            onChange={handleChange}
+            value={value.address}
+          />
+        </FormWrapper>
       )}
     </section>
   );
