@@ -6,7 +6,6 @@ import Input from "./ui/Input";
 const Education = () => {
   const [education, setEducation] = useState([]);
   const [value, setValue] = useState({
-    id: crypto.randomUUID(),
     schoolName: "",
     address: "",
     degree: "",
@@ -16,15 +15,16 @@ const Education = () => {
   const [showForm, setShowForm] = useState(false);
 
   const handleChange = (e) => {
-    setValue({
-      ...value,
+    setValue((prevValue) => ({
+      ...prevValue,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleFormSubmission = (event) => {
     event.preventDefault();
-    setValue({ ...value, id: crypto.randomUUID() });
+    const savedEducationValue = { ...value, id: crypto.randomUUID() };
+    setEducation((prevValue) => [...prevValue, savedEducationValue]);
     setValue((prevValue) => ({
       ...prevValue,
       schoolName: "",
@@ -33,7 +33,6 @@ const Education = () => {
       startDate: "",
       endDate: "",
     }));
-    setEducation((prevValue) => [...prevValue, value]);
     setShowForm(false);
   };
 
